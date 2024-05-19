@@ -49,5 +49,5 @@ end
 
 function dvd:draw()
     local label = self.label;
-    gfx.drawTextInRect("Template", label.x, label.y, label.width, label.height)
+    gfx.drawTextInRect("Template Julian", label.x, label.y, label.width, label.height)
 end
