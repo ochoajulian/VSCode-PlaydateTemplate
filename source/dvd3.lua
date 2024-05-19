@@ -65,6 +65,8 @@ function dvd3:draw()
     local label = self.label;
     gfx.drawTextInRect("Template Julian", label.x + 30, label.y, label.width + 60, label.height)
 	gfx.drawText("Template Julian", label.x +30, label.y +30, label.width, label.height)
-	gfx.image.new("images/pxArt(2)")
-	gfx.drawCircleAtPoint(120, 120, 18);
+	local peggy0 = gfx.image.new("images/IMG_0191")
+	local peggy1 = gfx.image.new("images/IMG_0192")
+	peggy0:draw(5, 0)
+	peggy1:draw(200, 0)
 end
