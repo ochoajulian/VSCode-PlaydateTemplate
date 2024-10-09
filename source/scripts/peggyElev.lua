@@ -182,6 +182,10 @@ end
 function PeggyElev:changeToJumpState()
     self.yVelocity = self.jumpVelocity
     self:changeState('jump')
+    
+    local jumpCount = gameData.jumpCount
+    jumpCount = jumpCount + 1
+    gameData.jumpCount = jumpCount
 end
 
 --Physics helper functions

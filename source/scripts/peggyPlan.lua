@@ -92,10 +92,10 @@ end
 
 function PeggyPlan:handleState()
     if self.currentState == "idlePlan" then
-        self:applyGravity()
+        --self:applyGravity()
         self:handleGroundInput()
     elseif self.currentState == "walkPlan" then
-        self:applyGravity()
+        --self:applyGravity()
         self:handleGroundInput()
     elseif self.currentState == "jump" then
     end

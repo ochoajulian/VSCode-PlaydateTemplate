@@ -1,9 +1,3 @@
--- Name this file `main.lua`. Your game can use multiple source files if you wish
--- (use the `import "myFilename"` command), but the simplest games can be written
--- with just `main.lua`.
-
--- You'll want to import these in just about every project you'll work on.
-
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/animator"
@@ -14,6 +8,7 @@ import "CoreLibs/crank"
 --Libraries
 import "scripts/libraries/AnimatedSprite"
 import "scripts/libraries/LDtk"
+import "scripts/libraries/Tanuk_AchievementHandler"
 --import 'scripts/libraries/Panels'
 
 --Game
@@ -24,15 +19,28 @@ import "scripts/peggyElev"
 import "scripts/saveCrate"
 import "scripts/gameScene"
 
-GameScene()
-
--- Declaring this "gfx" shorthand will make your life easier. Instead of having
--- to preface all graphics calls with "playdate.graphics", just use "gfx."
--- Performance will be slightly enhanced, too.
--- NOTE: Because it's local, you'll have to do it in every .lua source file.
 local plDt <const> = playdate
 local sfx <const> = playdate.sound
 local gfx <const> = playdate.graphics
+
+--Achievement Game Data
+gameData = {
+    thumpCount = 0,
+    jumpCount = 0
+}
+-- Creation of all achievements
+local arrAchievements = {}
+
+table.insert(arrAchievements, Tanuk_Achievement("Good start!", "Welcome to the game", function () return true end))
+table.insert(arrAchievements, Tanuk_Achievement("Jump Bunny", "Jumped 9 Times", function () 
+    return gameData.jumpCount >= 9
+end))
+table.insert(arrAchievements, Tanuk_Achievement("Weird Combo", "If that's how you want to play", function ()
+	return plDt.buttonIsPressed(plDt.kButtonLeft) and plDt.buttonIsPressed(plDt.kButtonB)
+end))
+-- End achievements
+
+__achievementHandler = Tanuk_AchievementHandler(arrAchievements)
 
 -- Here's our player sprite declaration. We'll scope it to this file because
 -- several functions need to access it.
@@ -100,6 +108,8 @@ myGameSetUp()
 -- This function is called right before every frame is drawn onscreen.
 -- Use this function to poll input, run game logic, and move sprites.
 
+GameScene()
+
 function playdate.update()
     --[[ Call the functions below in playdate.update() to draw sprites and keep
 timers updated. (We aren't using timers in this example, but in most
@@ -107,7 +117,8 @@ average-complexity games, you will.)
 ]]
     gfx.sprite.update()
     playdate.timer.updateTimers()
-    playdate.drawFPS(0, 0)
+    __achievementHandler:checkAchievements()
+    --playdate.drawFPS(0, 0)
 
     if playdate.buttonJustReleased(playdate.kButtonA) then
         print(GameScene:getCurrentLevel())
